@@ -60,7 +60,7 @@
                                 </td>
                                 <td class="title">
                                     <a href="/details?id=<%= list[i].id %>" class="storylink"><%= list[i].title %></a>
-                                    <span class="sitebit comhead"> (<a href="from?site=chromium.org"><span class="sitestr"><%= decodeURIComponent(list[i].url) %></span></a>)</span>
+                                    <span class="sitebit comhead"> (<a href="/details?id=<%= list[i].id %>"><span class="sitestr"><%= decodeURIComponent(list[i].url) %></span></a>)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -73,7 +73,7 @@
                                     <a href="item?id=<%= list[i].id %>">569&nbsp;comments</a>
                                 </td>
                             </tr>
-                            <tr class="spacer" style="height:5px">11111</tr>
+                            <tr class="spacer" style="height:5px"></tr>
                             <% } %>
                             <!-- 最后一行之后还有一个More -->
                             <tr class="morespace" style="height:10px"></tr>

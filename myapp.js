@@ -1,8 +1,3 @@
-// 1、实现根据用户不同请求响应不同的html文件
-// 2、封装 render 函数
-// 3、将 render 函数挂在到 res 对象上
-// 4、将请求静态资源，就是以 /resources 开头的，也封装到 render 中
-
 
 // 加载模块
 var http = require('http');
@@ -11,6 +6,7 @@ var path = require('path');
 var mime = require('mime');
 var url = require('url');
 var _ = require('underscore');
+var mountRenderForResponse = require('./guazairender.js')
 
 // 创建服务
 var server = http.createServer(function (req, res) {
@@ -20,8 +16,6 @@ var server = http.createServer(function (req, res) {
   var reqUrl = rUrl.pathname;
   // 获取请求方法
   var method = req.method.toLowerCase();
-
-
 
   // 处理用户请求 /favicon.ico 的问题
   reqUrl = (reqUrl === '/favicon.ico') ? '/resources/images/y18.gif' : reqUrl;
@@ -45,8 +39,20 @@ var server = http.createServer(function (req, res) {
   } else if (reqUrl === '/details' && method === 'get') {
     // 返回 `views/details.html` 文件内容
     // render(path.join(__dirname, 'views', 'details.html'), res);
+    fs.readFile(path.join(__dirname, 'data', 'data.json'), "utf8", function (err, data) {
+      if (err) {
+        throw err
+      }
+      data=JSON.parse(data);
+      for(var i=0;i<data.length;i++){
+        if(data[i]['id']==rUrl.query['id']){
+          var list=[data[i]];
+          break;
+        }
+      }
+      res.render(path.join(__dirname, 'views', 'details.html'),{title:'Hacker News',list:list,});
 
-    res.render(path.join(__dirname, 'views', 'details.html'));
+    })
 
   } else if (reqUrl === '/submit' && method === 'get') {
     // 返回 `views/submit.html` 文件内容
@@ -123,36 +129,3 @@ server.listen(9090, function () {
   console.log('http://localhost:9090');
 });
 
-function mountRenderForResponse(res) {
-
-
-  res.render = function (filename, tpl) {
-
-
-    fs.readFile(filename, function (err, data) {
-      if (err) {
-
-        if (err.code === 'ENOENT') {
-          // 表示请求的文件不存在
-          res.statusCode = 404;
-          res.statusMessage = 'Not Found';
-          res.setHeader('Content-Type', 'text/html;charset=utf-8');
-          res.end('<h1>404</h1>');
-          return;
-        }
-
-        throw err;
-      }
-      if (tpl) {
-        data = _.template(data.toString())(tpl)
-      }
-      // 设置响应报文信息
-      res.statusCode = 200;
-      res.statusMessage = 'OK';
-      res.setHeader('Content-Type', mime.lookup(filename));
-
-      // 向浏览器响应内容，并结束响应
-      res.end(data);
-    });
-  };
-}
