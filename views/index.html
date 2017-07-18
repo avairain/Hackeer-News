@@ -1,4 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8" />
     <meta name="referrer" content="origin" />
@@ -8,6 +9,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS" href="rss" />
     <title><%= title %></title>
 </head>
+
 <body>
     <center>
         <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
@@ -23,7 +25,7 @@
                                     </td>
                                     <td style="line-height:12pt; height:10px;">
                                         <span class="pagetop">
-                                            <b class="hnname"><a href="news">Hacker News</a></b>
+                                            <b class="hnname"><a href="news"><%= title %></a></b>
                                             <a href="newest">new</a> | <a href="newcomments">comments</a> | <a href="show">show</a> | <a href="ask">ask</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>
                                         </span>
                                     </td>
@@ -43,32 +45,35 @@
                 <!-- 中间新闻列表部分 -->
                 <tr>
                     <td>
-                        <table border="0" cellpadding="0" cellspacing="0" class="itemlist">
-                        <% for(var i = 0; i < items.length; i++) { %>
+                        <table border="0" cellpadding="1" cellspacing="1" class="itemlist">
+                            <% for(var i=0;i<list.length;i++){ %>
                             <tr class="athing" id="13718752">
                                 <td align="right" valign="top" class="title">
-                                    <span class="rank"><%= (i + 1) %>.</span>
+                                    <span class="rank"><%= (i+1) %>.</span>
                                 </td>
                                 <td valign="top" class="votelinks">
                                     <center>
-                                        <a id="up_13718752" href="vote?id=13718752&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a>
+                                        <a id="up_13718752" href="vote?id=13718752&amp;how=up&amp;goto=news">
+                                            <div class="votearrow" title="upvote"></div>
+                                        </a>
                                     </center>
                                 </td>
                                 <td class="title">
-                                    <a href="/details?id=<%= items[i].id %>" class="storylink"><%= items[i].title %></a>
-                                    <span class="sitebit comhead"> (<a href="from?site=chromium.org"><span class="sitestr">chromium.org</span></a>)</span>
+                                    <a href="/details?id=<%= list[i].id %>" class="storylink"><%= list[i].title %></a>
+                                    <span class="sitebit comhead"> (<a href="from?site=chromium.org"><span class="sitestr"><%= decodeURIComponent(list[i].url) %></span></a>)</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2"></td>
                                 <td class="subtext">
-                                    <span class="score" id="score_13718752">1481 points</span> 
-                                    by <a href="user?id=tptacek" class="hnuser">tptacek</a> 
-                                    <span class="age"><a href="item?id=13718752">7 hours ago</a></span> 
-                                    <span id="unv_13718752"></span> | <a href="hide?id=13718752&amp;goto=news">hide</a> | <a href="item?id=13718752">569&nbsp;comments</a>
+                                    <span class="score" id="score_13718752">1481 points</span> by <a href="user?id=tptacek"
+                                        class="hnuser">tptacek</a>
+                                    <span class="age"><a href="item?id=<%= list[i].id %>">7 hours ago</a></span>
+                                    <span id="unv_13718752"></span> | <a href="hide?id=<%= list[i].id %>">hide</a> |
+                                    <a href="item?id=<%= list[i].id %>">569&nbsp;comments</a>
                                 </td>
                             </tr>
-                            <tr class="spacer" style="height:5px"></tr>
+                            <tr class="spacer" style="height:5px">11111</tr>
                             <% } %>
                             <!-- 最后一行之后还有一个More -->
                             <tr class="morespace" style="height:10px"></tr>
@@ -117,4 +122,5 @@
         </table>
     </center>
 </body>
+
 </html>
