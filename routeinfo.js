@@ -28,15 +28,14 @@ module.exports = {
     },
     addGet: function (req, res) {
         context.readFile(function (data) {
+            var list;
             if (data) {
-                list = JSON.parse(data);
+                list = data;
             } else {
                 list = [];
             }
             list.unshift(res.rUrl.query);
-            var list;
-
-            fs.writeFile(data.path, JSON.stringify(list), function (err, data) {
+            fs.writeFile(getPath.dataPath, JSON.stringify(list), function (err, data) {
                 res.writeHead(301, 'Moved Permanently', {
                     'location': '/index'
                 })
@@ -49,8 +48,8 @@ module.exports = {
         context.readFile(function (data) {
             res.data = data;
             context.handleInfo(req, res, function (list) {
-                res.list=list;
-                context.writeFile(req,res);
+                res.list = list;
+                context.writeFile(req, res);
             });
         })
     },
